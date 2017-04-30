@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 """
 pyluks | a utility for managing LUKS encrypted containers
 
@@ -5,18 +7,18 @@ Examples:
 
   Create a container. The number is the size in megabytes.
 
-    $ container create work_stuff 100
+    $ luks.py create work_stuff 100
 
   Open a container. The default moves the container to ".<container>" and mounts
   to the container path. Use "-m" to set an explicit mount path.
 
-    $ container open work_stuff
+    $ luks.py open work_stuff
 
   Close a container. The default unmounts from the container path and moves the
   container back to it's original path. "-m" to set the mount path is required
   if it was used when the container was opened.
 
-    $ container close work_stuff
+    $ luks.py close work_stuff
 """
 
 from __future__ import print_function, unicode_literals
@@ -26,6 +28,10 @@ import sys
 import shlex
 import argparse
 import subprocess
+
+__author__ = 'Miguel Turner'
+__version__ = '0.1.0'
+__license__ = 'MIT'
 
 CMD_ALLOC = 'dd if=/dev/urandom of="{path}" bs=1M count={size}'
 CMD_EXPAND = 'dd if=/dev/urandom of="{path}" bs=1M count={size} oflag=append conv=notrunc'
