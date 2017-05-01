@@ -3,27 +3,29 @@
 """
 pyluks | a utility for managing LUKS encrypted containers
 
+Root access (via sudo) is required for all commands.
+
 Examples:
 
   Create a container. The number is the size in megabytes.
 
-    $ luks.py create work_stuff 100
+    $ sudo luks.py create work_stuff 100
 
   Open a container. The default moves the container to ".<container>" and mounts
   to the container path. Use "-m" to set an explicit mount path.
 
-    $ luks.py open work_stuff
+    $ sudo luks.py open work_stuff
 
   Close a container. The default unmounts from the container path and moves the
   container back to it's original path. "-m" to set the mount path is required
   if it was used when the container was opened.
 
-    $ luks.py close work_stuff
+    $ sudo luks.py close work_stuff
 
   Expand a container. The number is the amount in megabytes to increase the size
   of the container by.
 
-    $ luks.py expand work_stuff 10
+    $ sudo luks.py expand work_stuff 10
 """
 
 from __future__ import print_function, unicode_literals
