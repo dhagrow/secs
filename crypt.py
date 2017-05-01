@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 """
-pyluks | a utility for managing LUKS encrypted containers
+crypt | simple encrypted containers
 
 Root access (via sudo) is required for all commands.
 
@@ -9,23 +9,23 @@ Examples:
 
   Create a container. The number is the size in megabytes.
 
-    $ sudo luks.py create work_stuff 100
+    $ sudo crypt create work_stuff 100
 
   Open a container. The default moves the container to ".<container>" and mounts
   to the container path. Use "-m" to set an explicit mount path.
 
-    $ sudo luks.py open work_stuff
+    $ sudo crypt open work_stuff
 
   Close a container. The default unmounts from the container path and moves the
   container back to it's original path. "-m" to set the mount path is required
   if it was used when the container was opened.
 
-    $ sudo luks.py close work_stuff
+    $ sudo crypt close work_stuff
 
   Expand a container. The number is the amount in megabytes to increase the size
   of the container by.
 
-    $ sudo luks.py expand work_stuff 10
+    $ sudo crypt expand work_stuff 10
 """
 
 from __future__ import print_function, unicode_literals
@@ -60,6 +60,12 @@ CMD_UMOUNT = 'umount {mount}'
 CMD_CHOWN = 'chown {recurse}{uid}:{gid} {path}'
 
 def main():
+    try:
+        _main()
+    except KeyboardInterrupt:
+        pass
+
+def _main():
     parser = argparse.ArgumentParser(
         description=__doc__.splitlines()[1],
         epilog='\n'.join(__doc__.splitlines()[2:]),
@@ -201,7 +207,4 @@ def chown(path, recurse=False):
         })
 
 if __name__ == '__main__':
-    try:
-        main()
-    except KeyboardInterrupt:
-        pass
+    main()
