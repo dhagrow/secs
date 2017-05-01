@@ -6,7 +6,7 @@ from distutils.core import setup
 import luks
 
 BASE_DIR = os.path.dirname(__file__)
-README_PATH = os.path.join(BASE_DIR, 'README.md')
+README_PATH = os.path.join(BASE_DIR, 'README.rst')
 DESCRIPTION = open(README_PATH).read()
 
 setup(
