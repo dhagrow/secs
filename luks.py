@@ -19,6 +19,11 @@ Examples:
   if it was used when the container was opened.
 
     $ luks.py close work_stuff
+
+  Expand a container. The number is the amount in megabytes to increase the size
+  of the container by.
+
+    $ luks.py expand work_stuff 10
 """
 
 from __future__ import print_function, unicode_literals
