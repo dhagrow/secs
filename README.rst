@@ -1,5 +1,5 @@
-pyluks
-======
+crypt
+=====
 
 A utility for managing LUKS encrypted containers.
 
@@ -51,7 +51,7 @@ Implementation
 --------------
 
 *crypt* is based on the LUKS_ specification. Specifically, it requires that
-*cryptsetup* be available. It is currently written to use *ext4* as the
+cryptsetup_ be available. It is currently written to use *ext4* as the
 container filesystem. As such, this script will likely only work on Linux
 systems.
 
@@ -62,10 +62,11 @@ Related
 -------
 
 * Tomb_ - A similar tool, written for zsh.
-* _Tomber and _Mausoleum - Python wrappers for Tomb_.
+* Tomber_ and Mausoleum_ - Python wrappers for Tomb_.
 * LibreCrypt_ - May be useful to access your LUKS containers from Windows.
 
 .. _LUKS: https://en.wikipedia.org/wiki/Linux_Unified_Key_Setup
+.. _cryptsetup: https://gitlab.com/cryptsetup/cryptsetup/
 .. _Tomb: https://www.dyne.org/software/tomb/
 .. _Tomber: https://pypi.python.org/pypi/tomber
 .. _Mausoleum: https://pypi.python.org/pypi/mausoleum
