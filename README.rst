@@ -7,12 +7,12 @@ Purpose
 -------
 
 If you are unfamiliar with LUKS_ encryption, it is most commonly used to encrypt
-entire disk partitions. However, it is also capable of encrypting files that can
-be mounted as a loop device, allowing you to create portable encrypted
+entire disk partitions on Linux. However, it is also capable of encrypting files
+that can be mounted as a loop device, allowing you to create portable encrypted
 containers to keep different types of sensitive data isolated.
 
-This script is a simple wrapper to simplify the steps required to create and
-use these containers.
+This script is a wrapper to simplify the steps required to create and use these
+containers.
 
 Examples
 --------
