@@ -15,16 +15,31 @@ containers to keep different types of sensitive data isolated.
 This script is a wrapper to simplify the steps required to create and use these
 containers.
 
+Installation
+------------
+
+SECS can be installed using *pip*.
+
+.. code-block::
+
+    $ sudo pip install secs
+    # or
+    $ pip install --user secs
+
+Either command will install a script called *secs* which provides all the
+functionality.
+
 Examples
 --------
 
-Root access (via sudo) is required for all commands.
+Root access (via *sudo*) is required for all commands. The script that is
+installed will call *sudo* for you.
 
 Create a container. The number is the size in megabytes.
 
 .. code-block::
 
-    $ sudo secs create work_stuff 100
+    $ secs create work_stuff 100
     ...
     $ ls -Ap
     work_stuff
@@ -34,7 +49,7 @@ to the container path. Use `-m` to set an explicit mount path.
 
 .. code-block::
 
-    $ sudo secs open work_stuff
+    $ secs open work_stuff
     ...
     $ ls -Ap
     work_stuff/ .work_stuff
@@ -45,7 +60,7 @@ if it was used when the container was opened.
 
 .. code-block::
 
-    $ sudo secs close work_stuff
+    $ secs close work_stuff
     ...
     $ ls -Ap
     work_stuff
@@ -55,7 +70,7 @@ of the container by.
 
 .. code-block::
 
-    $ sudo secs expand work_stuff 10
+    $ secs expand work_stuff 10
 
 Implementation
 --------------

@@ -1,3 +1,4 @@
+#! /usr/bin/env bash
 # only sudo if we are not already root
 if [ $EUID != 0 ]; then SUDO="sudo"; else SUDO=""; fi
 PYTHON="$(which python)"
