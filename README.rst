@@ -9,7 +9,7 @@ Purpose
 
 If you are unfamiliar with LUKS_ encryption, it is most commonly used to encrypt
 entire disk partitions on Linux. However, it is also capable of encrypting files
-that can be mounted as a loop device, allowing you to create portable encrypted
+which can be mounted as a loop device, allowing you to create portable encrypted
 containers to keep different types of sensitive data isolated.
 
 This script is a wrapper to simplify the steps required to create and use these
@@ -25,6 +25,9 @@ Create a container. The number is the size in megabytes.
 .. code-block::
 
     $ sudo secs create work_stuff 100
+    ...
+    $ ls -ap
+    work_stuff
 
 Open a container. The default moves the container to `.<container>` and mounts
 to the container path. Use `-m` to set an explicit mount path.
@@ -32,6 +35,9 @@ to the container path. Use `-m` to set an explicit mount path.
 .. code-block::
 
     $ sudo secs open work_stuff
+    ...
+    $ ls -ap
+    work_stuff/ .work_stuff
 
 Close a container. The default unmounts from the container path and moves the
 container back to it's original path. `-m` to set the mount path is required
@@ -40,6 +46,9 @@ if it was used when the container was opened.
 .. code-block::
 
     $ sudo secs close work_stuff
+    ...
+    $ ls -ap
+    work_stuff
 
 Expand a container. The number is the amount in megabytes to increase the size
 of the container by.
