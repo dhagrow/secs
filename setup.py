@@ -3,25 +3,23 @@
 import os
 from setuptools import setup
 
-import crypt
+import secs
 
 BASE_DIR = os.path.dirname(__file__)
 README_PATH = os.path.join(BASE_DIR, 'README.rst')
 DESCRIPTION = open(README_PATH).read()
 
 setup(
-    name='crypt',
-    version=crypt.__version__,
+    name='secs',
+    version=secs.__version__,
     description='Simple encrypted containers',
     long_description=DESCRIPTION,
-    author=crypt.__author__,
+    author=secs.__author__,
     author_email='cymrow@gmail.com',
-    url='https://github.com/dhagrow/crypt',
-    py_modules=['crypt'],
-    entry_points={
-        'console_scripts': ['crypt=crypt:main'],
-    },
-    license=crypt.__license__,
+    url='https://github.com/dhagrow/secs',
+    py_modules=['secs'],
+    scripts=['secs'],
+    license=secs.__license__,
     keywords=['luks', 'container', 'encryption', 'crypto', 'crytography'],
     classifiers=[
         'Development Status :: 4 - Beta',

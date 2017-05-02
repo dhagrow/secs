@@ -1,7 +1,8 @@
-crypt
-=====
+SECS
+====
 
-A utility for managing LUKS encrypted containers.
+The Simple Encrypted Container Setup (SECS) is based on the Linux Unified Key
+Setup (LUKS). Because good LUKS are SECSy.
 
 Purpose
 -------
@@ -23,14 +24,14 @@ Create a container. The number is the size in megabytes.
 
 .. code-block::
 
-    $ sudo crypt create work_stuff 100
+    $ sudo secs create work_stuff 100
 
 Open a container. The default moves the container to `.<container>` and mounts
 to the container path. Use `-m` to set an explicit mount path.
 
 .. code-block::
 
-    $ sudo crypt open work_stuff
+    $ sudo secs open work_stuff
 
 Close a container. The default unmounts from the container path and moves the
 container back to it's original path. `-m` to set the mount path is required
@@ -38,22 +39,22 @@ if it was used when the container was opened.
 
 .. code-block::
 
-    $ sudo crypt close work_stuff
+    $ sudo secs close work_stuff
 
 Expand a container. The number is the amount in megabytes to increase the size
 of the container by.
 
 .. code-block::
 
-    $ sudo crypt expand work_stuff 10
+    $ sudo secs expand work_stuff 10
 
 Implementation
 --------------
 
-*crypt* is based on the LUKS_ specification. Specifically, it requires that
-cryptsetup_ be available. It is currently written to use *ext4* as the
-container filesystem. As such, this script will likely only work on Linux
-systems.
+*secs* is written in Python and based on the LUKS_ specification. Specifically,
+it requires that cryptsetup_ be available. It is currently written to use
+*ext4* as the container filesystem. As such, this script will likely only work
+on Linux systems.
 
 There are no external Python dependencies. The script may be freely copied
 anywhere, as long as Python 2 or 3 is available.
