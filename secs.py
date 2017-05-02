@@ -42,7 +42,7 @@ __license__ = 'MIT'
 
 CMD_ALLOC = 'dd if=/dev/urandom of="{path}" bs=1M count={size}'
 CMD_EXPAND = 'dd if=/dev/urandom of="{path}" bs=1M count={size} oflag=append conv=notrunc'
-CMD_FORMAT = 'cryptsetup -y luksFormat "{path}"'
+CMD_FORMAT = 'cryptsetup -yq luksFormat "{path}"'
 CMD_OPEN = 'cryptsetup luksOpen "{path}" {name}'
 CMD_CLOSE = 'cryptsetup luksClose {name}'
 CMD_RESIZE = 'cryptsetup resize {name}'
@@ -138,6 +138,12 @@ def _main():
 ##
 
 def create_container(args):
+    if os.path.exists(args['path']):
+        msg = 'WARNING!\n========\nThis will overwrite data on test irrevocably.\n'
+        print(msg, file=sys.stderr)
+        yes = input('Are you sure? (Type uppercase yes): ')
+        if yes != 'YES':
+            abort('aborted')
     if args['size'] < 3:
         abort('size must be at least 3MB')
     call(CMD_ALLOC, args)
@@ -176,7 +182,7 @@ def close_container(args):
         # unmount ./container and move ./.container to ./container
         args['hide'] = os.path.join(
             os.path.dirname(args['path']), '.' + args['path'])
-        call(CMD_SHOW, args)
+        call(CMD_SHOW, args, exit_on_error=False)
     call(CMD_CLOSE, args)
     out('container closed')
 
@@ -195,6 +201,12 @@ def expand_container(args):
 ##
 ## utils
 ##
+
+# py 2/3 compat
+try:
+    input = raw_input
+except NameError:
+    pass
 
 def call(template, args, exit_on_error=True):
     """Executes a command based on *template* filled in from *args*."""
