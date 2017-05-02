@@ -1,2 +1,2 @@
 DIR="$(dirname "$(readlink -f "$0")")"
-sudo /usr/bin/env python $DIR/luks.py "$@"
+sudo /usr/bin/env python $DIR/crypt.py "$@"

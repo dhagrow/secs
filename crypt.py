@@ -59,6 +59,10 @@ CMD_MOUNT = 'mount /dev/mapper/{name} {mount}'
 CMD_UMOUNT = 'umount {mount}'
 CMD_CHOWN = 'chown {recurse}{uid}:{gid} {path}'
 
+##
+## main
+##
+
 def main():
     try:
         _main()
@@ -82,6 +86,8 @@ def _main():
         help='the size of the container (in megabytes)')
     sub.add_argument('-n', '--name',
         help='a mapper name (defaults to path basename)')
+    sub.add_argument('-v', '--verbose', action='store_true',
+        help='verbose output')
     sub.set_defaults(func=create_container)
 
     sub = subparsers.add_parser('open',
@@ -91,6 +97,8 @@ def _main():
         help='a mount path (default hides and mounts to container path)')
     sub.add_argument('-n', '--name',
         help='a mapper name (defaults to path basename)')
+    sub.add_argument('-v', '--verbose', action='store_true',
+        help='verbose output')
     sub.set_defaults(func=open_container)
 
     sub = subparsers.add_parser('close',
@@ -100,6 +108,8 @@ def _main():
         help='a mount path (default unmounts and restores container path)')
     sub.add_argument('-n', '--name',
         help='a mapper name (defaults to path basename)')
+    sub.add_argument('-v', '--verbose', action='store_true',
+        help='verbose output')
     sub.set_defaults(func=close_container)
 
     sub = subparsers.add_parser('expand',
@@ -109,6 +119,8 @@ def _main():
         help='the amount to expand the container (in megabytes)')
     sub.add_argument('-n', '--name',
         help='a mapper name (defaults to path basename)')
+    sub.add_argument('-v', '--verbose', action='store_true',
+        help='verbose output')
     sub.set_defaults(func=expand_container)
 
     args = parser.parse_args()
@@ -116,16 +128,20 @@ def _main():
         sys.exit(parser.format_usage().rstrip())
 
     if os.geteuid() != 0:
-        sys.exit('! must be run as root')
+        abort('must be run as root')
 
     args.name = args.name or os.path.basename(args.path)
     args.func(vars(args))
 
+##
+## commands
+##
+
 def create_container(args):
     if args['size'] < 3:
-        sys.exit('! size must be at least 3MB')
+        abort('size must be at least 3MB')
     call(CMD_ALLOC, args)
-    chown(args['path'])
+    chown(args['path'], args['verbose'])
     call(CMD_FORMAT, args)
     call(CMD_OPEN, args)
     call(CMD_CREATE, args)
@@ -133,9 +149,9 @@ def create_container(args):
 
 def open_container(args):
     if is_active(args):
-        sys.exit('! container already open')
+        abort('container already open')
     if not is_luks(args):
-        sys.exit('! not a luks container: {}'.format(args['path']))
+        abort('not a luks container:', args['path'])
     call(CMD_OPEN, args)
     if not args['mount']:
         # move ./container to ./.container and mount to ./container
@@ -145,11 +161,12 @@ def open_container(args):
         args['mount'] = args['path']
     call(CMD_MKDIR, args, exit_on_error=False)
     call(CMD_MOUNT, args)
-    chown(args['mount'], recurse=True)
+    chown(args['mount'], recurse=True, verbose=args['verbose'])
+    out('container open at:', os.path.relpath(args['mount']))
 
 def close_container(args):
     if not is_active(args):
-        sys.exit('! container is not open')
+        abort('container is not open')
     auto_mount = not args['mount']
     if auto_mount:
         args['mount'] = args['path']
@@ -161,12 +178,13 @@ def close_container(args):
             os.path.dirname(args['path']), '.' + args['path'])
         call(CMD_SHOW, args)
     call(CMD_CLOSE, args)
+    out('container closed')
 
 def expand_container(args):
     if is_active(args):
-        sys.exit('! container must be closed before it can be expanded')
+        abort('container must be closed before it can be expanded')
     if not is_luks(args):
-        sys.exit('! not a luks container: {}'.format(args['path']))
+        abort('not a luks container:', args['path'])
     call(CMD_EXPAND, args)
     call(CMD_OPEN, args)
     call(CMD_RESIZE, args)
@@ -174,29 +192,35 @@ def expand_container(args):
     call(CMD_RESIZEFS, args)
     call(CMD_CLOSE, args)
 
+##
+## utils
+##
+
 def call(template, args, exit_on_error=True):
     """Executes a command based on *template* filled in from *args*."""
     cmd = template.format(**args)
-    print('>', cmd)
+    if args['verbose']:
+        print('>', cmd)
     try:
         subprocess.check_call(shlex.split(cmd))
     except subprocess.CalledProcessError as e:
-        msg = '! command failed: {}'.format(e)
-        (sys.exit if exit_on_error else print)(msg)
+        (abort if exit_on_error else error)('command failed:', e)
 
 def is_luks(args):
     cmd = CMD_ISLUKS.format(**args)
-    print('>', cmd)
+    if args['verbose']:
+        print('>', cmd)
     code = subprocess.call(shlex.split(cmd))
     return True if code == 0 else  False
 
 def is_active(args):
     cmd = CMD_STATUS.format(**args)
-    print('>', cmd)
-    code = subprocess.call(shlex.split(cmd))
+    if args['verbose']:
+        print('>', cmd)
+    code = subprocess.call(shlex.split(cmd), stdout=subprocess.DEVNULL)
     return True if code == 0 else  False
 
-def chown(path, recurse=False):
+def chown(path, recurse=False, verbose=False):
     """Sets the owner of *path* to the user calling sudo."""
     env = os.environ
     call(CMD_CHOWN, {
@@ -204,7 +228,18 @@ def chown(path, recurse=False):
         'uid': env['SUDO_UID'],
         'gid': env['SUDO_GID'],
         'path': path,
+        'verbose': verbose,
         })
+
+def out(*args, **kwargs):
+    print('[*]', *args, **kwargs)
+
+def error(*args, **kwargs):
+    print('[!]', *args, **kwargs)
+
+def abort(*args, **kwargs):
+    error(*args, **kwargs)
+    sys.exit(1)
 
 if __name__ == '__main__':
     main()

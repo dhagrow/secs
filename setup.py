@@ -18,7 +18,7 @@ setup(
     author_email='cymrow@gmail.com',
     url='https://github.com/dhagrow/crypt',
     py_modules=['crypt'],
-    entry_points = {
+    entry_points={
         'console_scripts': ['crypt=crypt:main'],
     },
     license=crypt.__license__,
