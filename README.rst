@@ -75,10 +75,10 @@ of the container by.
 Implementation
 --------------
 
-*secs* is written in Python and based on the LUKS_ specification. Specifically,
-it requires that cryptsetup_ be available. It is currently written to use
-*ext4* as the container filesystem. As such, this script will likely only work
-on Linux systems.
+*secs* is written in Python and is based on the LUKS_ specification. It requires
+that cryptsetup_ be available. It is currently written to use *ext4* as the
+container filesystem. As such, this script will likely only work on Linux
+systems.
 
 There are no external Python dependencies. The script may be freely copied
 anywhere, as long as Python 2 or 3 is available.
