@@ -2,7 +2,8 @@ SECS
 ====
 
 The Simple Encrypted Container Setup (SECS) is based on the Linux Unified Key
-Setup (LUKS). Because good LUKS are SECSy.
+Setup (LUKS). Because good Linux Unified Key Setups mean great Simple Encrypted
+Container Setups.
 
 Purpose
 -------
