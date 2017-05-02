@@ -26,7 +26,7 @@ Create a container. The number is the size in megabytes.
 
     $ sudo secs create work_stuff 100
     ...
-    $ ls -ap
+    $ ls -Ap
     work_stuff
 
 Open a container. The default moves the container to `.<container>` and mounts
@@ -36,7 +36,7 @@ to the container path. Use `-m` to set an explicit mount path.
 
     $ sudo secs open work_stuff
     ...
-    $ ls -ap
+    $ ls -Ap
     work_stuff/ .work_stuff
 
 Close a container. The default unmounts from the container path and moves the
@@ -47,7 +47,7 @@ if it was used when the container was opened.
 
     $ sudo secs close work_stuff
     ...
-    $ ls -ap
+    $ ls -Ap
     work_stuff
 
 Expand a container. The number is the amount in megabytes to increase the size
