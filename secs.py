@@ -217,7 +217,8 @@ def is_active(args):
     cmd = CMD_STATUS.format(**args)
     if args['verbose']:
         print('>', cmd)
-    code = subprocess.call(shlex.split(cmd), stdout=subprocess.DEVNULL)
+    with open(os.devnull, 'w') as devnull:
+        code = subprocess.call(shlex.split(cmd), stdout=devnull)
     return True if code == 0 else  False
 
 def chown(path, recurse=False, verbose=False):
