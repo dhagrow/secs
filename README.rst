@@ -30,17 +30,23 @@ SECS can be installed using *pip*.
 Either command will install a script called *secs* which provides all the
 functionality.
 
+SECS requires root access to run. Note that if you use the second install
+option, you will likely have to use `sudo -E` so that Python can find the
+package.
+
+You may find it convenient to use a simple script like the `bash script`_
+included in the repo to call *sudo* for you.
+
 Examples
 --------
 
-Root access (via *sudo*) is required for all commands. The script that is
-installed will call *sudo* for you.
+Root access (e.g. via *sudo*) is required for all commands.
 
 Create a container. The number is the size in megabytes.
 
 .. code-block::
 
-    $ secs create work_stuff 100
+    $ sudo secs create work_stuff 100
     ...
     $ ls -Ap
     work_stuff
@@ -50,7 +56,7 @@ to the container path. Use `-m` to set an explicit mount path.
 
 .. code-block::
 
-    $ secs open work_stuff
+    $ sudo secs open work_stuff
     ...
     $ ls -Ap
     work_stuff/ .work_stuff
@@ -61,7 +67,7 @@ if it was used when the container was opened.
 
 .. code-block::
 
-    $ secs close work_stuff
+    $ sudo secs close work_stuff
     ...
     $ ls -Ap
     work_stuff
@@ -71,7 +77,7 @@ of the container by.
 
 .. code-block::
 
-    $ secs expand work_stuff 10
+    $ sudo secs expand work_stuff 10
 
 Implementation
 --------------
@@ -97,3 +103,4 @@ Related
 .. _Tomber: https://pypi.python.org/pypi/tomber
 .. _Mausoleum: https://pypi.python.org/pypi/mausoleum
 .. _LibreCrypt: https://github.com/t-d-k/LibreCrypt
+.. _bash script: https://github.com/dhagrow/secs/blob/master/secs

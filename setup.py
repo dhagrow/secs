@@ -18,7 +18,7 @@ setup(
     author_email='cymrow@gmail.com',
     url='https://github.com/dhagrow/secs',
     py_modules=['secs'],
-    scripts=['secs'],
+    entry_points={'console_scripts': ['secs=secs:main']},
     license=secs.__license__,
     keywords=['luks', 'container', 'encryption', 'crypto', 'crytography'],
     classifiers=[
