@@ -37,7 +37,7 @@ import argparse
 import subprocess
 
 __author__ = 'Miguel Turner'
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 __license__ = 'MIT'
 
 CMD_ALLOC = 'dd if=/dev/urandom of="{path}" bs=1M count={size}'
